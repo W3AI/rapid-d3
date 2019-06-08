@@ -25,6 +25,8 @@ var thead = table.append('thead').append('tr');
 /* Append <tbody></tbody> to the table and store it in the "tbody" variable. */
 var tbody = table.append('tbody');
 
+var positions = { G: "Goalkeeper", D: "Defender", M: "Midfielder", F: "Forward" };
+
 /* Function to reload the data from the data file.
  * Call the redraw() function after the data is loaded to drive the drawing of the data.
  * We'll be filling this in during the lesson.
@@ -32,6 +34,9 @@ var tbody = table.append('tbody');
 var reload = () => {
     d3.tsv('afcw-roster.tsv', (rows) => {
         data = rows;
+        data.forEach(d => {
+            d.Pos = positions[d.Pos];
+        });
         redraw();
     });
 };
