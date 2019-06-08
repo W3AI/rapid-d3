@@ -41,7 +41,11 @@ var reload = () => {
  * We'll be filling this in during the lesson.
  */
 var redraw = () => {
-    console.log("redraw() called.");
+    thead.selectAll("th")
+    .data(d3.map(data[0]).keys())
+    .enter()
+    .append("th")
+    .text((d) => { return d; })
 };
 
 /* Call reload() once the page and script have loaded to get the controller script started. */
