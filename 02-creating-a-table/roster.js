@@ -37,7 +37,7 @@ var reload = () => {
 };
 
 /* Function to redraw the table.
- * It's good practice to keep the data input and drawing funcitons separate.
+ * It's good practice to keep the data input and drawing functions separate.
  * We'll be filling this in during the lesson.
  */
 var redraw = () => {
