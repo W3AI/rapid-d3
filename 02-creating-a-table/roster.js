@@ -14,8 +14,8 @@ var data = [];
  * The resulting table element is stored in the variable "table."
  */
 var table = d3.select('#roster')
-  .append('table')
-  .classed('table',true);
+    .append('table')
+    .classed('table', true);
 
 /* Append <thead><tr></tr></thead> to the above table.
  * The inner tr element is stored in the "thead" variable.
@@ -29,17 +29,19 @@ var tbody = table.append('tbody');
  * Call the redraw() function after the data is loaded to drive the drawing of the data.
  * We'll be filling this in during the lesson.
  */
-var reload = function() {
-  console.log("reload() called.");
-  redraw();
+var reload = () => {
+    d3.tsv('afcw-roaster.tsv', (rows) => {
+        data = rows;
+        redraw();
+    });
 };
 
 /* Function to redraw the table.
  * It's good practice to keep the data input and drawing funcitons separate.
  * We'll be filling this in during the lesson.
  */
-var redraw = function() {
-  console.log("redraw() called.");
+var redraw = () => {
+    console.log("redraw() called.");
 };
 
 /* Call reload() once the page and script have loaded to get the controller script started. */
