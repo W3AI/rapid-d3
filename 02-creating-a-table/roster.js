@@ -42,10 +42,10 @@ var reload = () => {
  */
 var redraw = () => {
     thead.selectAll("th")
-    .data(d3.map(data[0]).keys())
-    .enter()
-    .append("th")
-    .text((d) => { return d; })
+        .data(d3.map(data[0]).keys().slice(2))
+        .enter()
+        .append("th")
+        .text((d) => { return d; })
 
     var rows = tbody.selectAll("tr")
         .data(data);
@@ -54,7 +54,7 @@ var redraw = () => {
     rows.exit().remove();
 
     var cells = rows.selectAll("td")
-    .data((row) => { return d3.map(row).values(); })
+        .data((row) => { return d3.map(row).values().slice(2); })
 
     cells.enter().append("td");
     cells.text((d) => { return d; })
