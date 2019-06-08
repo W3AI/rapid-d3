@@ -1,4 +1,3 @@
-
 /* Creating a table
  *
  * This script shall create a table from a tab-separated value text document.
