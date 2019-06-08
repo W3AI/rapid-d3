@@ -46,6 +46,18 @@ var redraw = () => {
     .enter()
     .append("th")
     .text((d) => { return d; })
+
+    var rows = tbody.selectAll("tr")
+        .data(data);
+
+    rows.enter().append("tr");
+    rows.exit().remove();
+
+    var cells = rows.selectAll("td")
+    .data((row) => { return d3.map(row).values(); })
+
+    cells.enter().append("td");
+    cells.text((d) => { return d; })
 };
 
 /* Call reload() once the page and script have loaded to get the controller script started. */
