@@ -30,7 +30,7 @@ var tbody = table.append('tbody');
  * We'll be filling this in during the lesson.
  */
 var reload = () => {
-    d3.tsv('afcw-roaster.tsv', (rows) => {
+    d3.tsv('afcw-roster.tsv', (rows) => {
         data = rows;
         redraw();
     });
