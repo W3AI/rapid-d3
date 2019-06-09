@@ -2,6 +2,8 @@
  *
  * This script shall create a table from a tab-separated value text document.
  */
+var positions = { G: "Goalkeeper", D: "Defender", M: "Midfielder", F: "Forward" };
+var columns = ["No", "Name", "Team", "Pos"];
 
 /* Store the data in an array. Starts off empty.
  * This is usually NOT global, but making global here for demonstration purposes.
@@ -25,8 +27,6 @@ var thead = table.append('thead').append('tr');
 /* Append <tbody></tbody> to the table and store it in the "tbody" variable. */
 var tbody = table.append('tbody');
 
-var positions = { G: "Goalkeeper", D: "Defender", M: "Midfielder", F: "Forward" };
-
 /* Function to reload the data from the data file.
  * Call the redraw() function after the data is loaded to drive the drawing of the data.
  * We'll be filling this in during the lesson.
@@ -34,7 +34,7 @@ var positions = { G: "Goalkeeper", D: "Defender", M: "Midfielder", F: "Forward" 
 var reload = () => {
     d3.tsv('eng2-rosters.tsv', rows => {
         data = rows;
-        data.forEach( d => {
+        data.forEach(d => {
             d.Pos = positions[d.Pos];
         });
         redraw();
@@ -47,10 +47,10 @@ var reload = () => {
  */
 var redraw = () => {
     thead.selectAll("th")
-        .data(d3.map(data[0]).keys().slice(2))
+        .data(columns)
         .enter()
         .append("th")
-        .text( d => { return d; } )
+        .text(d => { return d; })
 
     var rows = tbody.selectAll("tr")
         .data(data);
@@ -59,10 +59,14 @@ var redraw = () => {
     rows.exit().remove();
 
     var cells = rows.selectAll("td")
-        .data( row => { return d3.map(row).values().slice(2); })
+        .data(row => {
+            var values = [];
+            columns.forEach(d => { values.push(row[d]); });
+            return values;
+        })
 
     cells.enter().append("td");
-    cells.text( d => { return d; })
+    cells.text(d => { return d; })
 };
 
 /* Call reload() once the page and script have loaded to get the controller script started. */
