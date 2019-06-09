@@ -9,6 +9,7 @@ var columns = ["No", "Name", "Team", "Pos"];
  * This is usually NOT global, but making global here for demonstration purposes.
  */
 var data = [];
+var teams = [];
 
 /* Select the DIV in the document with the ID of "roster".
  * Append a <table class="table"></table> to the selected DIV.
@@ -36,6 +37,10 @@ var reload = () => {
         data = rows;
         data.forEach(d => {
             d.Pos = positions[d.Pos];
+            if (teams.indexOf(d.TeamID) < 0) {
+                teams.push(d.TeamID);
+                teams[d.TeamID] = d.Team;
+            }
         });
         redraw();
     });
