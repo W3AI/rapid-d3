@@ -28,6 +28,11 @@ var thead = table.append('thead').append('tr');
 /* Append <tbody></tbody> to the table and store it in the "tbody" variable. */
 var tbody = table.append('tbody');
 
+// added a team selector
+var teamSelector = d3.select('#page-title')
+    .append('select')
+    .attr('id', 'team-selector');
+
 /* Function to reload the data from the data file.
  * Call the redraw() function after the data is loaded to drive the drawing of the data.
  * We'll be filling this in during the lesson.
@@ -42,6 +47,15 @@ var reload = () => {
                 teams[d.TeamID] = d.Team;
             }
         });
+
+        teamSelector.selectAll("option")
+            .data(teams)
+            .enter()
+            .append("option")
+            .attr("value", d => { return d; })
+            .text(d => { return teams[d]; })
+            .sort((a,b) => { return d3.ascending(a,b); });
+            
         redraw();
     });
 };
