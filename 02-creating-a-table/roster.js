@@ -32,10 +32,10 @@ var positions = { G: "Goalkeeper", D: "Defender", M: "Midfielder", F: "Forward" 
  * We'll be filling this in during the lesson.
  */
 var reload = () => {
-    d3.tsv('afcw-roster.tsv', (rows) => {
+    d3.tsv('afcw-roster.tsv', rows => {
         data = rows;
-        data.forEach(d => {
-            d.Pos = positions[d.Pos];
+        data.forEach( d => {
+            d.Position = positions[d.Position];
         });
         redraw();
     });
@@ -50,7 +50,7 @@ var redraw = () => {
         .data(d3.map(data[0]).keys().slice(2))
         .enter()
         .append("th")
-        .text((d) => { return d; })
+        .text( d => { return d; } )
 
     var rows = tbody.selectAll("tr")
         .data(data);
@@ -59,10 +59,10 @@ var redraw = () => {
     rows.exit().remove();
 
     var cells = rows.selectAll("td")
-        .data((row) => { return d3.map(row).values().slice(2); })
+        .data( row => { return d3.map(row).values().slice(2); })
 
     cells.enter().append("td");
-    cells.text((d) => { return d; })
+    cells.text( d => { return d; })
 };
 
 /* Call reload() once the page and script have loaded to get the controller script started. */
