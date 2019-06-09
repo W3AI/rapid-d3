@@ -32,7 +32,7 @@ var positions = { G: "Goalkeeper", D: "Defender", M: "Midfielder", F: "Forward" 
  * We'll be filling this in during the lesson.
  */
 var reload = () => {
-    d3.tsv('afcw-roster.tsv', rows => {
+    d3.tsv('eng2-rosters.tsv', rows => {
         data = rows;
         data.forEach( d => {
             d.Position = positions[d.Position];
