@@ -35,7 +35,7 @@ var reload = () => {
     d3.tsv('eng2-rosters.tsv', rows => {
         data = rows;
         data.forEach( d => {
-            d.Position = positions[d.Position];
+            d.Pos = positions[d.Pos];
         });
         redraw();
     });
