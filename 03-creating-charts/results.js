@@ -13,9 +13,9 @@ var svg = d3.select("#results")
 
 /* Our standard data reloading function */
 var reload = function() {
-  var data = [];
-  // Fill in here
-  redraw(data);
+  d3.csv('afcw-results.csv', function(rows) {
+      redraw(rows);
+  })
 };
 
 /* Our standard graph drawing function */
