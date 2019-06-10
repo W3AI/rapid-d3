@@ -39,7 +39,7 @@ var redraw = function(data) {
 
     bars
         .attr("x", function(d, i) { return x(i); })
-        .attr("width", 5)
+        .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.GoalsScored); })
         .attr("height", function(d) { return y(0) - y(d.GoalsScored); });
 };
