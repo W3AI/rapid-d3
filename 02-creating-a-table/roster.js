@@ -80,6 +80,9 @@ var redraw = function (roster) {
                 return (d === 'No') 
                 ? d3.ascending(+a[d], +b[d])
                 : d3.ascending(a[d], b[d]);
+            })
+            .style('background-color', function(d, i) {
+                return (i%2) ? 'white' : 'lightgray';
             });
         })
         .text(d => { return d; })
@@ -87,10 +90,7 @@ var redraw = function (roster) {
     var rows = tbody.selectAll("tr")
         .data(roster);
 
-    rows.enter().append("tr")
-        .style('background-color', function(d, i) {
-            return (i%2) ? 'white' : 'lightgray';
-        });
+    rows.enter().append("tr");
     rows.exit().remove();
 
     var cells = rows.selectAll("td")
