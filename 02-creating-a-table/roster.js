@@ -29,10 +29,13 @@ var thead = table.append('thead').append('tr');
 var tbody = table.append('tbody');
 
 // added a team selector
-var teamSelector = d3.select('#page-title')
-    .append('select')
-    .on('change', () => { selectTeam(this.value); })
-    .attr('id', 'team-selector');
+var teamSelector = d3.select("#page-title")
+    .append("select")
+    .on("change", function() { 
+        // console.log(this.value);
+        selectTeam(this.value); 
+    })
+    .attr("id", "team-selector");
 
 /* Function to reload the data from the data file.
  * Call the redraw() function after the data is loaded to drive the drawing of the data.
@@ -65,7 +68,7 @@ var reload = () => {
  * It's good practice to keep the data input and drawing functions separate.
  * We'll be filling this in during the lesson.
  */
-var redraw = (roster) => {
+var redraw = function (roster) {
     thead.selectAll("th")
         .data(columns)
         .enter()
@@ -89,11 +92,14 @@ var redraw = (roster) => {
     cells.text(d => { return d; })
 };
 
-var selectTeam = teamId => {
-    var roster = data.filter(d => {
+var selectTeam = function(teamId) {
+    var roster = data.filter( d => {
+        // console.log(teamId);
         return d['TeamID'] == teamId;
     });
     d3.select("#team-name").text(teams[teamId] + " Roster");
+    // console.log(teams);
+    // console.log('teams[teamId] = ' + teams[teamId]);
     document.getElementById('team-selector').value = teamId;
     redraw(roster);
 };
