@@ -87,7 +87,10 @@ var redraw = function (roster) {
     var rows = tbody.selectAll("tr")
         .data(roster);
 
-    rows.enter().append("tr");
+    rows.enter().append("tr")
+        .style('background-color', function(d, i) {
+            return (i%2) ? 'white' : 'lightgray';
+        });
     rows.exit().remove();
 
     var cells = rows.selectAll("td")
