@@ -13,14 +13,25 @@ var svg = d3.select("#results")
 
 /* Our standard data reloading function */
 var reload = function() {
-  d3.csv('afcw-results.csv', function(rows) {
+  d3.csv("afcw-results.csv", function(rows) {
       redraw(rows);
   })
 };
 
 /* Our standard graph drawing function */
 var redraw = function(data) {
-  // Fill in here
+    var bars = svg.selectAll("rect.bar")
+        .data(data);
+
+    bars.enter()
+        .append("rect")
+        .classed("bar", true);
+
+    bars
+        .attr("x", function(d, i) { return i; })
+        .attr("width", 5)
+        .attr("y", 0)
+        .attr("height", function(d) { return d.GoalsScored });
 };
 
 reload();
