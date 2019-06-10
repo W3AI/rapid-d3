@@ -41,13 +41,11 @@ var redraw = function(data) {
         .classed("bar", true);
 
     bars
-        .attr("x", function(d, i) { return x(i); })
-        .attr("width", x.rangeBand())
-        .attr("y", y(0))
-        .attr("height", 0)
-        .transition()
-        .delay(function(d,i) { return i * 50; })
-        .duration(800)
+        .attr("x", function(d, i) { return x(i); }) .attr("width", x.rangeBand())
+        .attr("y", y(0)) .attr("height", 0)
+
+        .transition() .delay(function(d,i) { return i * 50; }) .duration(800)
+
         .attr("y", function(d) { return y(d.GoalsScored); })
         .attr("height", function(d) { return y(0) - y(d.GoalsScored); });
 
