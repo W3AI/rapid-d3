@@ -18,7 +18,8 @@ var teams = [];
  */
 var table = d3.select('#roster')
     .append('table')
-    .classed('table', true);
+    .classed('table', true)//;
+    .classed('table-striped', 'true');   // <<< Recommended CSS table stripped solution
 
 /* Append <thead><tr></tr></thead> to the above table.
  * The inner tr element is stored in the "thead" variable.
