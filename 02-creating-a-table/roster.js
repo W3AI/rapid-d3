@@ -3,7 +3,7 @@
  * This script shall create a table from a tab-separated value text document.
  */
 var positions = { G: "Goalkeeper", D: "Defender", M: "Midfielder", F: "Forward" };
-var columns = ["No", "Name", "Team", "Pos"];
+var columns = ["No", "Name", "Pos"];
 
 /* Store the data in an array. Starts off empty.
  * This is usually NOT global, but making global here for demonstration purposes.
