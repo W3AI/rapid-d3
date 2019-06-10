@@ -31,7 +31,7 @@ var redraw = function(data) {
         .attr("x", function(d, i) { return i; })
         .attr("width", 5)
         .attr("y", 0)
-        .attr("height", function(d) { return d.GoalsScored });
+        .attr("height", function(d) { return d.GoalsScored * 50 });
 };
 
 reload();
