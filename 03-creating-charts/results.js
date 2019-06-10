@@ -45,6 +45,23 @@ var redraw = function(data) {
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.GoalsScored); })
         .attr("height", function(d) { return y(0) - y(d.GoalsScored); });
+
+    // Draw the x and y axis
+    var axisData = [
+        {axis: xAxis, dx: 0, dy: (height - margin.bottom), clazz: 'x'},
+        {axis: yAxis, dx: margin.left, dy: 0, clazz: 'y'}
+    ];
+
+    var axis = svg.selectAll('g.axis')
+        .data(axisData);
+
+    axis.enter().append("g").classed("axis", true);
+    axis.each(function(d) {
+        d3.select(this)
+        .attr("transform", "translate("+d.dx+", "+d.dy+")")
+        .call(d.axis);
+    });
+    
 };
 
 reload();
