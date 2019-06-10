@@ -28,9 +28,11 @@ var redraw = function(data) {
         .classed("bar", true);
 
     bars
-        .attr("x", function(d, i) { return i; })
+        .attr("x", function(d, i) { return i * 6; })
         .attr("width", 5)
-        .attr("y", 0)
+        .attr("y", function(d) {
+            return height - margin.bottom - (d.GoalsScored * 50);
+        })
         .attr("height", function(d) { return d.GoalsScored * 50 });
 };
 
