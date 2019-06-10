@@ -35,7 +35,16 @@ var reload = function () {
             }
         });
 
-        console.log(dataMap);
+        // calculated progresive league points after each game
+        dataMap.forEach( (key, values) => {
+            var games = [];
+            values.forEach( (g, i) => {
+                games.push(gameOutcome(key, g, games));
+            });
+            dataMap.set(key, games);    // Replace old games with outcomes
+        });
+
+        // console.log(dataMap);
         redraw(dataMap);
     });
 };
@@ -44,6 +53,27 @@ var reload = function () {
 var redraw = function (data) {
     // Fill in here
 };
+
+// calculate leaguePoints
+function gameOutcome(team, game, games) {
+    var isAway = (game.Away === team);
+    var goals = isAway ? +game.AwayScore : +game.HomeScore;
+    var allowed = isAway ? +game.HomeScore : +game.AwayScore;
+    var decision = (goals > allowed) ? 'win' : (goals < allowed) ? 'loss' : 'draw';
+    var points = (goals > allowed) ? 3 : (goals < allowed) ? 0 : 1;
+    return {
+        date: game.Date,
+        team: team,
+        align: isAway ? 'away' : 'home',
+        opponent: isAway ? game.Home : game.Away,
+        goals: goals,
+        allowed: allowed,
+        venue: game.Venue,
+        decision: decision,
+        points: points,
+        leaguePoints: d3.sum(games, d => { return d.points }) + points
+    }; 
+}
 
 reload();
 
