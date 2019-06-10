@@ -18,6 +18,9 @@ var y = d3.scale
     .linear()
     .range([height - margin.bottom, margin.top]);
 
+var xAxis = d3.svg.axis().scale(x).orient("bottom");
+var yAxis = d3.svg.axis().scale(y).orient("left");
+
 /* Our standard data reloading function */
 var reload = function() {
   d3.csv("afcw-results.csv", function(rows) {
