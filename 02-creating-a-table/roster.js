@@ -76,7 +76,9 @@ var redraw = function (roster) {
         .on("click", function(d) {
             tbody.selectAll("tr")
             .sort(function(a, b) {
-                return d3.ascending(a[d], b[d]);
+                return (d === 'No') 
+                ? d3.ascending(+a[d], +b[d])
+                : d3.ascending(a[d], b[d]);
             });
         })
         .text(d => { return d; })
