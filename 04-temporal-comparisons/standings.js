@@ -12,9 +12,11 @@ var svg = d3.select("#standings-chart")
 
 /* Our standard data reloading function */
 var reload = function() {
-  var data = [];
-  // Fill in here
-  redraw(data);
+  // Read in json file
+  d3.json('eng2-2013-14.json', function(results) {
+      console.log(results);
+      redraw(results);
+  })
 };
 
 /* Our standard graph drawing function */
