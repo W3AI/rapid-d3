@@ -13,7 +13,7 @@ d3.layout.cloud().size([300, 300])
     .on("end", draw)
     .start();
 function draw(words) {
-  d3.select("body").append("svg")
+  d3.select("#word-cloud").append("svg")
       .attr("width", 300)
       .attr("height", 300)
     .append("g")
