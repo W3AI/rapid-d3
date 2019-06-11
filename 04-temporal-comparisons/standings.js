@@ -91,6 +91,12 @@ var redraw = function (data) {
         .attr("class", "line-graph")
         .attr("transform", "translate(" + xAxis.tickPadding() + ", 0)");
 
+    lines.sort(function(a, b) {
+        var aPoints = a.value[a.value.length - 1].leaguePoints;
+        var bPoints = b.value[b.value.length - 1].leaguePoints;
+        return d3.descending(aPoints, bPoints);
+    });
+
     lines.each(function (d, i) {
         d3.select(this)
             .attr("id", d.key)
