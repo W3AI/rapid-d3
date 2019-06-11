@@ -126,5 +126,10 @@ function gameOutcome(team, game, games) {
     };
 }
 
+// helper function to remove spaces and create ids for teams/projects
+function makeId(string) {
+    return string.replace(/[^A-Za-z0-9]/g, '');
+}
+
 reload();
 
