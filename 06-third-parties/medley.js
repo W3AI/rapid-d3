@@ -26,8 +26,8 @@ d3.tsv("stats.tsv", function (data) {
     // script below from https://github.com/jasondavies/d3-cloud/blob/v1.0.5/examples/simple.html
     d3.layout.cloud().size([width, height])
         .words(leaders)
-        .padding(5)
-        .rotate(function () { return ~~(Math.random() * 2) * 90; })
+        .padding(0)
+        //.rotate(function () { return ~~(Math.random() * 2) * 90; })
         .font("Impact")
         .fontSize(d => { return leaderScale(d.size); })
         .on("end", draw)
