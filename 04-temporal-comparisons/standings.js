@@ -80,6 +80,21 @@ var redraw = function (data) {
     var path = lines.append("path")
         .datum(function(d) { return d.value; })
         .attr("d", function(d) { return pointLine(d); });
+
+    var axis = svg.selectAll(".axis")
+        .data([
+            { axis: xAxis, x: 0, y: y(0), clazz: "x" },
+            { axis: yAxis, x:x.range()[0], y: 0, clazz: "y" }
+        ]);
+    
+    axis.enter().append("g")
+        .attr("class", function(d) { return "axis " + d.clazz; })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")";
+    });
+
+    axis.each(function(d) {
+        d3.select(this).call(d.axis);
+    })
 };
 
 // calculate leaguePoints
