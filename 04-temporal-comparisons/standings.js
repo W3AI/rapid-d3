@@ -4,6 +4,8 @@ var width = 750,
     height = 500,
     margin = { top: 20, right: 20, bottom: 20, left: 70 };
 
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+
 var x = d3.time.scale().range([margin.left, width - margin.right]);
 var y = d3.scale.linear().range([height - margin.bottom, margin.top]);
 
@@ -24,11 +26,11 @@ var svg = d3.select("#standings-chart")
 var reload = function () {
     // Read in json file
     d3.json('eng2-2013-14.json', function (results) {
-        // Convert dates
-        results.forEach(d => { d.Date = new Date(d.Date); })
+        // Convert dates to Date
+        results.forEach(function(d) { d.Date = parseDate(d.Date); });
 
         // initialize X and Y scale domains
-        x.domain([results[0].Date, results[results.length - 1].date]);
+        x.domain([results[0].Date, results[results.length - 1].Date]);
         y.domain([0, 100]);
 
         // and merge the results into single array with all records including the date for each
@@ -76,8 +78,8 @@ var redraw = function (data) {
         .attr("transform", "translate(" + xAxis.tickPadding() + ", 0)");
 
     var path = lines.append("path")
-        .datum(d => { return d.value })
-        .attr("d", d => { return pointLine(d); })
+        .datum(function(d) { return d.value; })
+        .attr("d", function(d) { return pointLine(d); });
 };
 
 // calculate leaguePoints
