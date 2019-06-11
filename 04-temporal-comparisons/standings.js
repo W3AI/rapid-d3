@@ -9,6 +9,11 @@ var y = d3.scale.linear().range([height - margin.bottom, margin.top]);
 
 var xAxis = d3.svg.axis().scale(x).orient("bottom");
 var yAxis = d3.svg.axis().scale(y).orient("left");
+
+var pointLine = d3.svg.line()
+    .x(d => { return x(d.date); })
+    .y(d => { return y(d.leaguePoints); });
+
 /* The drawing area */
 var svg = d3.select("#standings-chart")
     .append("svg")
