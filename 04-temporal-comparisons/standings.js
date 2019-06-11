@@ -47,8 +47,8 @@ var reload = function () {
         // and build datasets of games/matches/projects for each team
         var dataMap = d3.map();
         d3.merge([
-            d3.nest().key(d => { return d.Away; }).entries(data),
-            d3.nest().key(d => { return d.Home; }).entries(data)
+            d3.nest().key(d => { return makeId(d.Away); }).entries(data),
+            d3.nest().key(d => { return makeId(d.Home); }).entries(data)
         ]).forEach(d => {
             if (dataMap.has(d.key)) {
                 dataMap.set(d.key, d3.merge([dataMap.get(d.key), d.values]))
@@ -81,6 +81,11 @@ var redraw = function (data) {
         .attr("class", "line-graph")
         .attr("transform", "translate(" + xAxis.tickPadding() + ", 0)");
 
+    lines.each(function(d, i) {
+        d3.select(this)
+        .attr("id", d.key);
+    });
+
     var path = lines.append("path")
         .datum(function(d) { return d.value; })
         .attr("d", function(d) { return pointLine(d); });
@@ -107,14 +112,14 @@ var redraw = function (data) {
 
 // calculate leaguePoints
 function gameOutcome(team, game, games) {
-    var isAway = (game.Away === team);
+    var isAway = ( makeId(game.Away) === teamId);
     var goals = isAway ? +game.AwayScore : +game.HomeScore;
     var allowed = isAway ? +game.HomeScore : +game.AwayScore;
     var decision = (goals > allowed) ? 'win' : (goals < allowed) ? 'loss' : 'draw';
     var points = (goals > allowed) ? 3 : (goals < allowed) ? 0 : 1;
     return {
         date: game.Date,
-        team: team,
+        team: isAway? game.Away : game.Home,
         align: isAway ? 'away' : 'home',
         opponent: isAway ? game.Home : game.Away,
         goals: goals,
