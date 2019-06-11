@@ -29,6 +29,12 @@ var colors24 = [
     "#843c39", "#ad494a", "#d6616b", "#e7969c"
 ];
 
+// Adding invisible tooltip div for games/tx? ; "tooltip" class is part of bootstrap
+var gameDiv = d3.select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);   // opacity 0 means invisible
+
 /* The drawing area */
 var svg = d3.select("#standings-chart")
     .append("svg")
@@ -119,7 +125,10 @@ var redraw = function (data) {
         d3.select(this)
             .attr("cx", x(d.date))
             .attr("cy", y(d.leaguePoints))
-            .style("fill", color);
+            .style("fill", color)
+            .on("mouseover", function(e) { return  showGame(d, color); })
+            .on("click", function(e) { return showGame(d, color); })
+            .on("mouseout", function(e) { return hidegame(); });
     });
 
     var legends = svg.selectAll(".legend")
