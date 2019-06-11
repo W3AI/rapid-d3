@@ -93,7 +93,8 @@ var redraw = function (data) {
 
     lines.each(function (d, i) {
         d3.select(this)
-            .attr("id", d.key);
+            .attr("id", d.key)
+            .attr("data-legend", d.value[0].team);
     });
 
     var path = lines.append("path")
