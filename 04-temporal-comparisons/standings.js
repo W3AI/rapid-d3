@@ -2,7 +2,7 @@
 /* Constants for our drawing area */
 var width = 750,
     height = 500,
-    margin = { top: 20, right: 20, bottom: 20, left: 70 };
+    margin = { top: 20, right: 20, bottom: 70, left: 70 };
 
 var parseDate = d3.time.format("%Y-%m-%d").parse;
 var formatDate = d3.time.format("%b %d");
