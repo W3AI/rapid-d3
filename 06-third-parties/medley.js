@@ -1,6 +1,12 @@
 
+var width = 750,
+    height = 500;
+
+
+
+// script below from https://github.com/jasondavies/d3-cloud/blob/v1.0.5/examples/simple.html
 var fill = d3.scale.category20();
-d3.layout.cloud().size([300, 300])
+d3.layout.cloud().size([width, height])
     .words([
       "Hello", "world", "normally", "you", "want", "more", "words",
       "than", "this"].map(function(d) {
@@ -12,10 +18,11 @@ d3.layout.cloud().size([300, 300])
     .fontSize(function(d) { return d.size; })
     .on("end", draw)
     .start();
+
 function draw(words) {
   d3.select("#word-cloud").append("svg")
-      .attr("width", 300)
-      .attr("height", 300)
+      .attr("width", width)
+      .attr("height", height)
     .append("g")
       .attr("transform", "translate(150,150)")
     .selectAll("text")
