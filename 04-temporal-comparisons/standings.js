@@ -65,7 +65,16 @@ var reload = function () {
 
 /* Our standard graph drawing function */
 var redraw = function (data) {
-    // Fill in here
+    var lines = svg.selectAll('.line-graph').data(data.entries());
+
+    lines.enter()
+        .append("g")
+        .attr("class", "line-graph")
+        .attr("transform", "translate(" + xAxis.tickPadding() + ", 0");
+
+    var path = lines.append("path")
+        .datum(d => { return d.value })
+        .attr("d", d => { return pointLine(d); })
 };
 
 // calculate leaguePoints
