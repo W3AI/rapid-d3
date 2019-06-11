@@ -7,6 +7,8 @@ var width = 750,
 var x = d3.time.scale().range([margin.left, width - margin.right]);
 var y = d3.scale.linear().range([height - margin.bottom, margin.top]);
 
+var xAxis = d3.svg.axis().scale(x).orient("bottom");
+var yAxis = d3.svg.axis().scale(y).orient("left");
 /* The drawing area */
 var svg = d3.select("#standings-chart")
     .append("svg")
@@ -17,6 +19,10 @@ var svg = d3.select("#standings-chart")
 var reload = function () {
     // Read in json file
     d3.json('eng2-2013-14.json', function (results) {
+        // initialize X and Y scale domains
+        x.domain([results[0].Date, results[results.length - 1].date]);
+        y.domain([0, 100]);
+
         // and merge the results into single array with all records including the date for each
         data = d3.merge(
             results.map(function (d) {
@@ -27,21 +33,21 @@ var reload = function () {
         // and build datasets of games/matches/projects for each team
         var dataMap = d3.map();
         d3.merge([
-            d3.nest().key( d => { return d.Away; }).entries(data),
-            d3.nest().key( d => { return d.Home; }).entries(data)
-        ]).forEach( d => {
+            d3.nest().key(d => { return d.Away; }).entries(data),
+            d3.nest().key(d => { return d.Home; }).entries(data)
+        ]).forEach(d => {
             if (dataMap.has(d.key)) {
                 dataMap.set(d.key, d3.merge([dataMap.get(d.key), d.values]))
-                    .sort(function(a,b) { return d3.ascending(a.Date, b.Date); });
+                    .sort(function (a, b) { return d3.ascending(a.Date, b.Date); });
             } else {
                 dataMap.set(d.key, d.values);
             }
         });
 
         // calculated progresive league points after each game
-        dataMap.forEach( (key, values) => {
+        dataMap.forEach((key, values) => {
             var games = [];
-            values.forEach( (g, i) => {
+            values.forEach((g, i) => {
                 games.push(gameOutcome(key, g, games));
             });
             dataMap.set(key, games);    // Replace old games with outcomes
@@ -75,7 +81,7 @@ function gameOutcome(team, game, games) {
         decision: decision,
         points: points,
         leaguePoints: d3.sum(games, d => { return d.points }) + points
-    }; 
+    };
 }
 
 reload();
