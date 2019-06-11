@@ -101,6 +101,11 @@ var redraw = function (data) {
         .datum(function (d) { return d.value; })
         .attr("d", function (d) { return pointLine(d); });
 
+    svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", "translate(" + (margin.left + 20) + "," + y(95) + ")" )
+        .call(d3.legend);
+
     var axis = svg.selectAll(".axis")
         .data([
             { axis: xAxis, x: 0, y: y(0), clazz: "x" },
