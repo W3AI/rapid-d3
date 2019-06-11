@@ -94,13 +94,11 @@ var redraw = function (data) {
         return d3.descending(aPoints, bPoints);
     });
 
-    lines
-        .style("stroke", function (d, i) { return colors24[i]; })
-        .attr("class", "line-graph")
-        .attr("transform", "translate(" + xAxis.tickPadding() + ", 0)");
-
     lines.each(function (d, i) {
         d3.select(this)
+            .style("stroke", colors24[i])
+            .attr("class", "line-graph")
+            .attr("transform", "translate(" + xAxis.tickPadding() + ", 0)")
             .attr("id", d.key)
             .attr("data-legend-" + ((i < 16) ? 1 : 2), d.value[0].team);
     });
