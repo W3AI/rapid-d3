@@ -24,6 +24,9 @@ var svg = d3.select("#standings-chart")
 var reload = function () {
     // Read in json file
     d3.json('eng2-2013-14.json', function (results) {
+        // Convert dates
+        results.forEach(d => { d.Date = new Date(d.Date); })
+
         // initialize X and Y scale domains
         x.domain([results[0].Date, results[results.length - 1].date]);
         y.domain([0, 100]);
