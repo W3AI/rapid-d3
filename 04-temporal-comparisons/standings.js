@@ -20,6 +20,15 @@ var pointLine = d3.svg.line()
     .x(d => { return x(d.date); })
     .y(d => { return y(d.leaguePoints); });
 
+var colors24 = [
+    "#393b79", "#5254a3", "#6b6ecf", "#9c9ede",
+    "#3182bd", "#6baed6", "#9ecae1", "#c6dbef",
+    "#e6550d", "#fd8d3c", "#fdae6b", "#fdd0a2",
+    "#31a354", "#74c476", "#a1d99b", "#c7e9c0",
+    "#756bb1", "#9e9ac8", "#bcbddc", "#dadaeb",
+    "#843c39", "#ad494a", "#d6616b", "#e7969c"
+];
+
 /* The drawing area */
 var svg = d3.select("#standings-chart")
     .append("svg")
@@ -31,7 +40,7 @@ var reload = function () {
     // Read in json file
     d3.json('eng2-2013-14.json', function (results) {
         // Convert dates to Date
-        results.forEach(function(d) { d.Date = parseDate(d.Date); });
+        results.forEach(function (d) { d.Date = parseDate(d.Date); });
 
         // initialize X and Y scale domains
         x.domain([results[0].Date, results[results.length - 1].Date]);
@@ -78,48 +87,50 @@ var redraw = function (data) {
 
     lines.enter()
         .append("g")
+        .style("stroke", function (d, i) { return colors24[i]; })
         .attr("class", "line-graph")
         .attr("transform", "translate(" + xAxis.tickPadding() + ", 0)");
 
-    lines.each(function(d, i) {
+    lines.each(function (d, i) {
         d3.select(this)
-        .attr("id", d.key);
+            .attr("id", d.key);
     });
 
     var path = lines.append("path")
-        .datum(function(d) { return d.value; })
-        .attr("d", function(d) { return pointLine(d); });
+        .datum(function (d) { return d.value; })
+        .attr("d", function (d) { return pointLine(d); });
 
     var axis = svg.selectAll(".axis")
         .data([
             { axis: xAxis, x: 0, y: y(0), clazz: "x" },
-            { axis: yAxis, x:x.range()[0], y: 0, clazz: "y" }
+            { axis: yAxis, x: x.range()[0], y: 0, clazz: "y" }
         ]);
-    
-    axis.enter().append("g")
-        .attr("class", function(d) { return "axis " + d.clazz; })
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")";
-    });
 
-    axis.each(function(d) {
+    axis.enter().append("g")
+        .attr("class", function (d) { return "axis " + d.clazz; })
+        .attr("transform", function (d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+
+    axis.each(function (d) {
         d3.select(this).call(d.axis);
     });
 
     axis.selectAll(".x.axis text")
         .style("text-anchor", "end")
-        .attr({dx: "-0.8em", transform: "rotate(-65)" });
+        .attr({ dx: "-0.8em", transform: "rotate(-65)" });
 };
 
 // calculate leaguePoints
-function gameOutcome(team, game, games) {
-    var isAway = ( makeId(game.Away) === teamId);
+function gameOutcome(teamId, game, games) {
+    var isAway = (makeId(game.Away) === teamId);
     var goals = isAway ? +game.AwayScore : +game.HomeScore;
     var allowed = isAway ? +game.HomeScore : +game.AwayScore;
     var decision = (goals > allowed) ? 'win' : (goals < allowed) ? 'loss' : 'draw';
     var points = (goals > allowed) ? 3 : (goals < allowed) ? 0 : 1;
     return {
         date: game.Date,
-        team: isAway? game.Away : game.Home,
+        team: isAway ? game.Away : game.Home,
         align: isAway ? 'away' : 'home',
         opponent: isAway ? game.Home : game.Away,
         goals: goals,
