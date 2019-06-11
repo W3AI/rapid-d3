@@ -126,9 +126,9 @@ var redraw = function (data) {
             .attr("cx", x(d.date))
             .attr("cy", y(d.leaguePoints))
             .style("fill", color)
-            .on("mouseover", function(e) { return  showGame(d, color); })
-            .on("click", function(e) { return showGame(d, color); })
-            .on("mouseout", function(e) { return hidegame(); });
+            .on("mouseover", function (e) { return showGame(d, color); })
+            .on("click", function (e) { return showGame(d, color); })
+            .on("mouseout", function (e) { return hideGame(); });
     });
 
     var legends = svg.selectAll(".legend")
@@ -193,6 +193,35 @@ function gameOutcome(teamId, game, games) {
 // helper function to remove spaces and create ids for teams/projects
 function makeId(string) {
     return string.replace(/[^A-Za-z0-9]/g, '');
+}
+
+function showGame(d, color) {
+    gameDiv.transition()
+        .duration(20)
+        .style("opacity", 0)
+        .style("background-color", "white");
+    gameDiv
+        .html(d.team + "(" + formatDate(d.date) + " - " + d.align + ")<br/>"
+            + "Versus: " + d.opponent + "<br/>"
+            + "Venue: " + d.venue + "<br/>"
+            + "Result: " + d.goals + " - " + d.allowed + " " + d.decision + "<br/>"
+            + "Points: " + d.leaguePoints
+        )
+        .style({
+            left: (d3.event.pageX + 10) + "px",
+            top: (d3.event.pageY - 40) + "px"
+        })
+        .transition()
+        .duration(200)
+        .style("opacity", 0.9)
+        .style("background-color", color);
+}
+
+function hideGame() {
+    gameDiv.transition()
+        .duration(500)
+        .style("opacity", 0)
+        .style("background-color", "white");
 }
 
 reload();
