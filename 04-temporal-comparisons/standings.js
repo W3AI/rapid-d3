@@ -4,6 +4,9 @@ var width = 750,
     height = 500,
     margin = { top: 20, right: 20, bottom: 20, left: 70 };
 
+var x = d3.time.scale().range([margin.left, width - margin.right]);
+var y = d3.scale.linear().range([height - margin.bottom, margin.top]);
+
 /* The drawing area */
 var svg = d3.select("#standings-chart")
     .append("svg")
