@@ -5,11 +5,15 @@ var width = 750,
     margin = { top: 20, right: 20, bottom: 20, left: 70 };
 
 var parseDate = d3.time.format("%Y-%m-%d").parse;
+var formatDate = d3.time.format("%b %d");
 
 var x = d3.time.scale().range([margin.left, width - margin.right]);
 var y = d3.scale.linear().range([height - margin.bottom, margin.top]);
 
-var xAxis = d3.svg.axis().scale(x).orient("bottom");
+var xAxis = d3.svg.axis().scale(x)
+    .orient("bottom")
+    .ticks(d3.time.weeks, 1)
+    .tickFormat(formatDate);
 var yAxis = d3.svg.axis().scale(y).orient("left");
 
 var pointLine = d3.svg.line()
