@@ -86,16 +86,18 @@ var redraw = function (data) {
     var lines = svg.selectAll('.line-graph').data(data.entries());
 
     lines.enter()
-        .append("g")
-        .style("stroke", function (d, i) { return colors24[i]; })
-        .attr("class", "line-graph")
-        .attr("transform", "translate(" + xAxis.tickPadding() + ", 0)");
+        .append("g");
 
-    lines.sort(function(a, b) {
+    lines.sort(function (a, b) {
         var aPoints = a.value[a.value.length - 1].leaguePoints;
         var bPoints = b.value[b.value.length - 1].leaguePoints;
         return d3.descending(aPoints, bPoints);
     });
+
+    lines
+        .style("stroke", function (d, i) { return colors24[i]; })
+        .attr("class", "line-graph")
+        .attr("transform", "translate(" + xAxis.tickPadding() + ", 0)");
 
     lines.each(function (d, i) {
         d3.select(this)
@@ -108,8 +110,8 @@ var redraw = function (data) {
         .attr("d", function (d) { return pointLine(d); });
 
     var legends = svg.selectAll(".legend")
-        .data([ { dx: margin.left + 20, dy: y(95) },
-                { dx: margin.left + 220, dy: y(95) }]);
+        .data([{ dx: margin.left + 20, dy: y(95) },
+        { dx: margin.left + 220, dy: y(95) }]);
 
     legends.enter()
         .append("g")
