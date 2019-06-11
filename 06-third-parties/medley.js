@@ -14,13 +14,18 @@ d3.tsv("stats.tsv", function (data) {
     // slice to keep the first/top 100 names
     var leaders = data
         .filter(function (d) { return +d.G > 0; })
-        .map(function (d) { return { text: d.Name, size: +d.G }; })
+        .map(function (d) {
+            return {
+                text: d.Name, size: +d.G,
+                goals: +d.G, team: d.Team, pos: d.Pos
+            };
+        })
         .sort(function (a, b) { return d3.descending(a.size, b.size); })
         .slice(0, 100);
 
     leaderScale
         .domain([d3.min(leaders, d => { return d.size; }),
-                d3.max(leaders, d => { return d.size })
+        d3.max(leaders, d => { return d.size })
         ]);
 
     // script below from https://github.com/jasondavies/d3-cloud/blob/v1.0.5/examples/simple.html
