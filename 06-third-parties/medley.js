@@ -30,12 +30,12 @@ d3.tsv("stats.tsv", function (data) {
         //.rotate(function () { return ~~(Math.random() * 2) * 90; })
         .font("Impact")
         .fontSize(d => { return leaderScale(d.size); })
-        .on("end", draw)
+        .on("end", drawCloud)
         .start();
 
 })
 
-function draw(words) {
+function drawCloud(words) {
     d3.select("#word-cloud").append("svg")
         .attr("width", width)
         .attr("height", height)
