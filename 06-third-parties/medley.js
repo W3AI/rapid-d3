@@ -2,6 +2,8 @@
 var width = 750,
     height = 500;
 
+var leaderScale = d3.scale.linear().range([10, 60]);
+
 var fill = d3.scale.category20();
 
 d3.tsv("stats.tsv", function (data) {
@@ -16,13 +18,18 @@ d3.tsv("stats.tsv", function (data) {
         .sort(function (a, b) { return d3.descending(a.size, b.size); })
         .slice(0, 100);
 
+    leaderScale
+        .domain([d3.min(leaders, d => { return d.size; }),
+                d3.max(leaders, d => { return d.size })
+        ]);
+
     // script below from https://github.com/jasondavies/d3-cloud/blob/v1.0.5/examples/simple.html
     d3.layout.cloud().size([width, height])
         .words(leaders)
         .padding(5)
         .rotate(function () { return ~~(Math.random() * 2) * 90; })
         .font("Impact")
-        .fontSize(function (d) { return d.size; })
+        .fontSize(d => { return leaderScale(d.size); })
         .on("end", draw)
         .start();
 
