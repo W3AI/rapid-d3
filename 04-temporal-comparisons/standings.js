@@ -98,7 +98,11 @@ var redraw = function (data) {
 
     axis.each(function(d) {
         d3.select(this).call(d.axis);
-    })
+    });
+
+    axis.selectAll(".x.axis text")
+        .style("text-anchor", "end")
+        .attr({dx: "-0.8em", transform: "rotate(-65)" });
 };
 
 // calculate leaguePoints
