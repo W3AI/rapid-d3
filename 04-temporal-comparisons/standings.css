@@ -1,1 +1,6 @@
-
+.line-graph {
+    fill: none;
+    stroke: darkblue;
+    stroke-width: 2px;
+    shape-rendering: smooth;
+}
