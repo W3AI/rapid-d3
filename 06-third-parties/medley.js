@@ -4,6 +4,7 @@ var width = 750,
     radius = Math.min(width, height) / 2;
 
 var leaderScale = d3.scale.linear().range([10, 60]);
+var rScale = d3.scale.linear().domain([0, 4]).range([0, radius]);
 
 var fill = d3.scale.category20();
 
