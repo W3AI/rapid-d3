@@ -117,6 +117,26 @@ function drawSunburst(data) {
         .on("click", function(d) { writeInfo(d); })
         .each(stash);
 
+    var text = g.filter(function(d) { return d.depth < 3; })
+        .append("text")
+        .style("fill", "white")
+        .style("font-size", "10px");
+
+    text.each(function(d) {
+        var radius = myScale[d.depth];
+        var angle = calcAngle(d.x, d.dx);
+        var margin = (d.depth == 2) ? 8 : 5;
+        margin *= (angle > 90) ? -1 : 1;
+        var anchor = (d.depth == 2) ? "middle" : (angle > 90) ? "end" : "start";
+        d3.select(this)
+            .attr("dx", margin)
+            .attr("dy", ".38em")    // Vertical alignment
+            .attr("transform", "rotate(" + angle + ")translate(" + radius + ")rotate(" 
+            + (angle > 90 ? -180 : 0) + ")")
+            .attr("text-anchor", anchor)
+            .text(d.key);
+    })
+
     d3.selectAll("input").on("change", function change() {
         var value = this.value === "count"
             ? function () { return 1; }
@@ -167,4 +187,8 @@ function writeInfo(d) {
 
     tspan
         .text(function(d) { return d; });
+}
+
+function calcAngle(x, dx) {
+    return (x + (dx / 2)) * 180 / Math.PI - 90;
 }
