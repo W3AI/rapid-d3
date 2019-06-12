@@ -164,7 +164,6 @@ function drawSunburst(data) {
                     + (angle > 90 ? -180 : 0) + ")")
                 .attr("text-anchor", anchor);
         });
-
     });
 }
 
