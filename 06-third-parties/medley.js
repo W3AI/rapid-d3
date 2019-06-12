@@ -5,6 +5,7 @@ var width = 750,
 
 var leaderScale = d3.scale.linear().range([10, 60]);
 var rScale = d3.scale.linear().domain([0, 4]).range([0, radius]);
+var myScale = [0, rScale(1.5), rScale(3.5), rScale(3.75), rScale(4)];
 
 var fill = d3.scale.category20();
 
@@ -14,6 +15,14 @@ var sunburst = d3.select("#top-scorers").append("svg")
     .attr("height", height * 1.04)
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height * .52 + ")");
+
+// prep info box in the middle of sunburst
+var infoBox = d3.select("#top-scorers svg")
+    .append("g")
+    .attr("transform", "translate(" + ((width / 2) - rScale(1.1)) + "," + 
+    ((height / 2) - rScale(.2)) + ")")
+    .append("text")
+    .style("font-size", "12px");
 
 var partition = d3.layout.partition()
     .sort(null)
@@ -30,8 +39,8 @@ var partition = d3.layout.partition()
 var arc = d3.svg.arc()
     .startAngle(function (d) { return d.x; })
     .endAngle(function (d) { return d.x + d.dx; })
-    .innerRadius(function (d) { return Math.sqrt(d.y); })
-    .outerRadius(function (d) { return Math.sqrt(d.y + d.dy); });
+    .innerRadius(function (d) { return myScale[d.depth]; })
+    .outerRadius(function (d) { return myScale[d.depth + 1]; });
 // END - from Sunburst Partition: https://gist.github.com/mbostock/4063423
 
 d3.tsv("stats.tsv", function (data) {
@@ -102,6 +111,8 @@ function drawSunburst(data) {
         .style("stroke", "#fff")
         .style("fill", function (d) { return fill(d.children ? d.key : d.text); })
         .style("fill-rule", "evenodd")
+        .on("mouseover", function(d) { writeInfo(d); })
+        .on("click", function(d) { writeInfo(d); })
         .each(stash);
 
     d3.selectAll("input").on("change", function change() {
@@ -131,4 +142,27 @@ function arcTween(a) {
         a.dx0 = b.dx;
         return arc(b);
     };
+}
+
+function writeInfo(d) {
+    var team = pos = name = goals = "";
+
+    switch (d.depth) {
+        // 3 - outside arc, ...
+        case 3: name = d.text; goals = "" + d.goals + " goals"; d = d.parent;
+        case 2: pos = d.key; d = d.parent;
+        case 1: team = d.key;
+        default: break;
+    }
+
+    var tspan = infoBox.selectAll("tspan")
+        .data([team, pos, name, goals]);
+
+    tspan.enter()
+        .append("tspan")
+        .attr("x", 0)
+        .attr("y", function(d, i) { return "" + (i * 1.4) + "em"; });
+
+    tspan
+        .text(function(d) { return d; });
 }
