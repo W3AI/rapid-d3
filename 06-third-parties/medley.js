@@ -103,10 +103,12 @@ function drawCloud(words) {
 }
 
 function drawSunburst(data) {
-    var path = sunburst.datum(data).selectAll("path")
+    var g = sunburst.datum(data).selectAll("g")
         .data(partition.nodes)
-        .enter().append("path")
+        .enter().append("g")
         .attr("display", function (d) { return d.depth ? null : "none"; }) // hide inner ring
+        
+    var path = g.append("path")
         .attr("d", arc)
         .style("stroke", "#fff")
         .style("fill", function (d) { return fill(d.children ? d.key : d.text); })
