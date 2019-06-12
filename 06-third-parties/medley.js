@@ -19,8 +19,8 @@ var sunburst = d3.select("#top-scorers").append("svg")
 // prep info box in the middle of sunburst
 var infoBox = d3.select("#top-scorers svg")
     .append("g")
-    .attr("transform", "translate(" + ((width / 2) - rScale(1.1)) + "," + 
-    ((height / 2) - rScale(.2)) + ")")
+    .attr("transform", "translate(" + ((width / 2) - rScale(1.1)) + "," +
+        ((height / 2) - rScale(.2)) + ")")
     .append("text")
     .style("font-size", "12px");
 
@@ -107,22 +107,22 @@ function drawSunburst(data) {
         .data(partition.nodes)
         .enter().append("g")
         .attr("display", function (d) { return d.depth ? null : "none"; }) // hide inner ring
-        
+
     var path = g.append("path")
         .attr("d", arc)
         .style("stroke", "#fff")
         .style("fill", function (d) { return fill(d.children ? d.key : d.text); })
         .style("fill-rule", "evenodd")
-        .on("mouseover", function(d) { writeInfo(d); })
-        .on("click", function(d) { writeInfo(d); })
+        .on("mouseover", function (d) { writeInfo(d); })
+        .on("click", function (d) { writeInfo(d); })
         .each(stash);
 
-    var text = g.filter(function(d) { return d.depth < 3; })
+    var text = g.filter(function (d) { return d.depth < 3; })
         .append("text")
         .style("fill", "white")
         .style("font-size", "10px");
 
-    text.each(function(d) {
+    text.each(function (d) {
         var radius = myScale[d.depth];
         var angle = calcAngle(d.x, d.dx);
         var margin = (d.depth == 2) ? 8 : 5;
@@ -131,8 +131,8 @@ function drawSunburst(data) {
         d3.select(this)
             .attr("dx", margin)
             .attr("dy", ".38em")    // Vertical alignment
-            .attr("transform", "rotate(" + angle + ")translate(" + radius + ")rotate(" 
-            + (angle > 90 ? -180 : 0) + ")")
+            .attr("transform", "rotate(" + angle + ")translate(" + radius + ")rotate("
+                + (angle > 90 ? -180 : 0) + ")")
             .attr("text-anchor", anchor)
             .text(d.key);
     })
@@ -147,6 +147,24 @@ function drawSunburst(data) {
             .transition()
             .duration(1500)
             .attrTween("d", arcTween);
+
+        // transition text on players / Goals Toggle
+        text.each(function (d) {
+            var radius = myScale[d.depth];
+            var angle = calcAngle(d.x, d.dx);
+            var margin = (d.depth == 2 ? 8 : 5);
+            margin *= (angle > 90) ? -1 : 1;
+            var anchor = (d.depth == 2) ? "middle" : (angle > 90) ? "end" : "start";
+
+            d3.select(this)
+                .transition()
+                .duration(1500)
+                .attr("dx", margin)
+                .attr("transform", "rotate(" + angle + ")translate(" + radius + ")rotate("
+                    + (angle > 90 ? -180 : 0) + ")")
+                .attr("text-anchor", anchor);
+        });
+
     });
 }
 
@@ -183,10 +201,10 @@ function writeInfo(d) {
     tspan.enter()
         .append("tspan")
         .attr("x", 0)
-        .attr("y", function(d, i) { return "" + (i * 1.4) + "em"; });
+        .attr("y", function (d, i) { return "" + (i * 1.4) + "em"; });
 
     tspan
-        .text(function(d) { return d; });
+        .text(function (d) { return d; });
 }
 
 function calcAngle(x, dx) {
